@@ -1,0 +1,50 @@
+/* Estilos generales */
+body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Hero con fondo animado simple */
+.hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #6c757d 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    padding: 60px;
+    border-radius: 12px;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Tarjetas */
+.card {
+    border-radius: 10px;
+}
+
+/* Weather card */
+#weatherCard .temp {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 30px;
+        font-size: 14px;
+    }
+
+    #tempChart {
+        height: 150px !important;
+    }
+}

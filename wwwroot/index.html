@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WeatherWise</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+
+    <!-- Header con bienvenida y logout -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#">WeatherWise</a>
+            <div class="ms-auto d-flex align-items-center">
+                <span id="welcomeText" class="me-3"></span>
+                <button id="logoutBtn" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav de pestañas -->
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="mainTabs">
+            <li class="nav-item"><a class="nav-link active" data-tab="home">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" data-tab="clima">Clima</a></li>
+            <li class="nav-item"><a class="nav-link" data-tab="contacto">Contacto</a></li>
+        </ul>
+
+        <!-- Contenido -->
+        <div class="tab-content mt-4">
+            <!-- Inicio -->
+            <div id="home" class="tab-pane active">
+                <section class="hero p-5 rounded shadow-sm text-center text-white">
+                    <h1 class="display-5 fw-bold">WeatherWise - Tu clima inteligente</h1>
+                    <p class="lead">Pronósticos precisos, actualización en tiempo real y cobertura global.</p>
+                </section>
+
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card p-3 shadow-sm">
+                            <h5>Precisión</h5>
+                            <p class="mb-0">Precisión del <strong>95%</strong> en pronósticos locales.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-3 shadow-sm">
+                            <h5>Ciudades</h5>
+                            <p class="mb-0">Cobertura de <strong>+10,000</strong> ciudades.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-3 shadow-sm">
+                            <h5>Actualización</h5>
+                            <p class="mb-0">Datos actualizados cada <strong>hora</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clima -->
+            <div id="clima" class="tab-pane" style="display:none;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input id="cityInput" type="text" class="form-control" placeholder="Ingresa una ciudad">
+                            <button id="searchBtn" class="btn btn-danger">Buscar</button>
+                        </div>
+
+                        <div class="mb-2">
+                            <button class="btn btn-outline-secondary quick-city me-2" data-city="Madrid">Madrid</button>
+                            <button class="btn btn-outline-secondary quick-city me-2" data-city="Londres">Londres</button>
+                            <button class="btn btn-outline-secondary quick-city me-2" data-city="Nueva York">Nueva York</button>
+                            <button class="btn btn-outline-secondary quick-city me-2" data-city="Tokio">Tokio</button>
+                            <button class="btn btn-outline-secondary quick-city" data-city="Sídney">Sídney</button>
+                        </div>
+
+                        <div id="weatherCard" class="card p-3 shadow-sm mt-3" style="display:none;">
+                            <div id="weatherContent"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <canvas id="tempChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div id="contacto" class="tab-pane" style="display:none;">
+                <div class="card p-4 shadow-sm">
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre completo</label>
+                            <input type="text" id="nombre" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ciudad de interés</label>
+                            <select id="ciudad" class="form-select">
+                                <option>Madrid</option>
+                                <option>Barcelona</option>
+                                <option>Londres</option>
+                                <option>París</option>
+                                <option>Roma</option>
+                                <option>Otra</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje</label>
+                            <textarea id="mensaje" class="form-control" rows="4" minlength="10" required></textarea>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newsletter">
+                            <label class="form-check-label">Deseo recibir el newsletter semanal del clima</label>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Enviar</button>
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    <h6>Ubicación oficina</h6>
+                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7038%2C40.4168%2C-3.7038%2C40.4168&amp;layer=mapnik" style="border:0; width:100%; height:250px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
