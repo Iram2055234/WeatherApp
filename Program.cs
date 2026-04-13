@@ -43,7 +43,7 @@ app.MapGet("/", (HttpContext http) =>
     return Results.Ok();
 });
 
-// Endpoint para login (robusto)
+// Endpoint para login
 app.MapPost("/api/login", async (HttpContext http) =>
 {
     try
@@ -67,7 +67,7 @@ app.MapPost("/api/login", async (HttpContext http) =>
             return;
         }
 
-        // Credenciales hardcodeadas (coincidir con login.html)
+        // Credenciales hardcodeadas
         if (body.Email.Equals("admin@weatherwise.com", StringComparison.OrdinalIgnoreCase)
             && body.Password == "Admin123")
         {
@@ -134,15 +134,9 @@ app.MapGet("/api/clima", async (HttpContext http, IHttpClientFactory clientFacto
     }
 
     var config = app.Configuration;
-    // Leer ApiKey desde appsettings o variable de entorno OpenWeather__ApiKey
     var apiKey = config["OpenWeather:ApiKey"]
                  ?? Environment.GetEnvironmentVariable("OpenWeather__ApiKey")
                  ?? string.Empty;
-
-    // Log parcial para depuración (no mostrar la clave completa)
-    var masked = string.IsNullOrWhiteSpace(apiKey) ? "(vacía)" :
-                 (apiKey.Length > 6 ? apiKey.Substring(0, 6) + "..." : apiKey);
-    app.Logger.LogInformation("OpenWeather API Key leída (parcial): {key}", masked);
 
     if (string.IsNullOrWhiteSpace(apiKey))
     {
@@ -159,12 +153,8 @@ app.MapGet("/api/clima", async (HttpContext http, IHttpClientFactory clientFacto
         var resp = await client.GetAsync(url);
         var text = await resp.Content.ReadAsStringAsync();
 
-        app.Logger.LogInformation("OpenWeather response status: {status}", resp.StatusCode);
-        app.Logger.LogDebug("OpenWeather response body: {body}", text);
-
         if (!resp.IsSuccessStatusCode)
         {
-            // Reenviar el mensaje de la API para diagnóstico
             http.Response.StatusCode = (int)resp.StatusCode;
             await http.Response.WriteAsJsonAsync(new { message = "Error desde OpenWeather", status = resp.StatusCode, details = text });
             return;
@@ -173,7 +163,6 @@ app.MapGet("/api/clima", async (HttpContext http, IHttpClientFactory clientFacto
         using var doc = JsonDocument.Parse(text);
         var root = doc.RootElement;
 
-        // Lectura segura de propiedades
         string nombre = root.GetProperty("name").GetString() ?? ciudad;
         string pais = root.GetProperty("sys").GetProperty("country").GetString() ?? "";
         double temp = root.GetProperty("main").GetProperty("temp").GetDouble();
@@ -209,20 +198,6 @@ app.MapGet("/api/clima", async (HttpContext http, IHttpClientFactory clientFacto
         http.Response.StatusCode = 500;
         await http.Response.WriteAsJsonAsync(new { message = "Error interno al obtener clima", error = ex.Message });
     }
-});
-
-// Endpoint temporal de diagnóstico: muestra si la app leyó la API Key (parcialmente)
-app.MapGet("/api/debug-openweather-key", (HttpContext http) =>
-{
-    var config = app.Configuration;
-    var apiKey = config["OpenWeather:ApiKey"]
-                 ?? Environment.GetEnvironmentVariable("OpenWeather__ApiKey")
-                 ?? string.Empty;
-
-    var masked = string.IsNullOrWhiteSpace(apiKey) ? "(vacía)" :
-                 (apiKey.Length > 6 ? apiKey.Substring(0, 6) + "..." : apiKey);
-
-    return Results.Ok(new { keyRead = masked });
 });
 
 app.Run();

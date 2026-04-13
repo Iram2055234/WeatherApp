@@ -95,7 +95,6 @@ async function fetchClima(ciudad) {
         if (!resp.ok) {
             const err = await resp.json();
             showWeatherError(err?.message || 'Ciudad no encontrada');
-            showLoader(false);
             return;
         }
         const data = await resp.json();
@@ -110,16 +109,18 @@ async function fetchClima(ciudad) {
 
 function showLoader(show) {
     const card = document.getElementById('weatherCard');
+    const content = document.getElementById('weatherContent');
+    card.style.display = '';
     if (show) {
-        card.style.display = '';
-        card.innerHTML = '<div class="text-center p-4">Cargando...</div>';
+        content.innerHTML = '<div class="text-center p-4">Cargando...</div>';
     }
 }
 
 function showWeatherError(msg) {
     const card = document.getElementById('weatherCard');
+    const content = document.getElementById('weatherContent');
     card.style.display = '';
-    card.innerHTML = `<div class="text-danger p-3">${msg}</div>`;
+    content.innerHTML = `<div class="text-danger p-3">${msg}</div>`;
 }
 
 function renderWeather(d) {
