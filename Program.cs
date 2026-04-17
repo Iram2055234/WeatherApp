@@ -217,7 +217,7 @@ record ContactMessage
     [JsonPropertyName("mensaje")]
     public string? Mensaje { get; set; }
     [JsonPropertyName("newsletter")]
-    public bool Newsletter { get; set; }
+    public bool Newsletter { get; set; 
     [JsonPropertyName("fecha")]
     public DateTime Fecha { get; set; }
 }
